@@ -211,6 +211,118 @@ def home():
     """Render the main chatbot interface"""
     return render_template('index.html')
 
+@app.route('/test')
+def test():
+    """Test page for floating chat widget"""
+    return """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Floating Chat Widget</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .test-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .test-content h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .test-content p {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        /* Floating Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .chat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 24px;
+        }
+
+        .chat-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-icon .pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-content">
+        <h1>🧪 Test Page</h1>
+        <p>This is a test page to verify the floating chat widget is working correctly.</p>
+        <p>You should see a small circular chat icon in the bottom-right corner of this page.</p>
+        <p>If you can see the chat icon, click on it to test the popup functionality.</p>
+    </div>
+
+    <!-- Floating Chat Widget -->
+    <div class="chat-widget">
+        <div class="chat-icon" id="chatIcon">
+            <div class="pulse"></div>
+            <i class="fas fa-comments"></i>
+        </div>
+    </div>
+
+    <script>
+        const chatIcon = document.getElementById('chatIcon');
+        
+        chatIcon.addEventListener('click', function() {
+            alert('✅ Chat widget is working! You clicked the floating chat icon.');
+        });
+        
+        console.log('Test page loaded successfully');
+        console.log('Chat widget should be visible in bottom-right corner');
+    </script>
+</body>
+</html>
+"""
+
 @app.route('/favicon.ico')
 def favicon():
     """Serve favicon"""

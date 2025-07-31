@@ -14,59 +14,123 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
         }
 
-        .chat-container {
+        /* Floating Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        /* Chat Icon */
+        .chat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 24px;
+        }
+
+        .chat-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-icon .pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        /* Chat Popup */
+        .chat-popup {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 350px;
+            height: 470px;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            height: 600px;
-            display: flex;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            display: none;
             flex-direction: column;
             overflow: hidden;
+            border: 1px solid #e0e0e0;
+            z-index: 9998;
+        }
+
+        .chat-popup.active {
+            display: flex;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .chat-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 20px;
-            text-align: center;
             position: relative;
         }
 
         .chat-header h1 {
-            font-size: 1.5rem;
+            font-size: 18px;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .chat-header p {
-            font-size: 0.9rem;
+            font-size: 12px;
             opacity: 0.9;
         }
 
-        .status-indicator {
+        .chat-close {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 10px;
-            height: 10px;
-            background: #4CAF50;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            transition: background 0.3s ease;
+            font-size: 16px;
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        .chat-close:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .chat-messages {
@@ -76,48 +140,26 @@
             background: #f8f9fa;
         }
 
+        .welcome-message {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
         .message {
             margin-bottom: 15px;
             display: flex;
             align-items: flex-start;
+            gap: 10px;
         }
 
         .message.user {
-            justify-content: flex-end;
-        }
-
-        .message-content {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            word-wrap: break-word;
-            line-height: 1.4;
-        }
-        
-        .message-content br {
-            margin-bottom: 5px;
-        }
-        
-        .message-content ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-        
-        .message-content li {
-            margin: 5px 0;
-        }
-
-        .message.bot .message-content {
-            background: white;
-            color: #333;
-            border: 1px solid #e0e0e0;
-            border-bottom-left-radius: 5px;
-        }
-
-        .message.user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-bottom-right-radius: 5px;
+            flex-direction: row-reverse;
         }
 
         .message-avatar {
@@ -127,18 +169,68 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 8px;
             font-size: 16px;
+            flex-shrink: 0;
         }
 
-        .message.bot .message-avatar {
+        .bot .message-avatar {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
-        .message.user .message-avatar {
+        .user .message-avatar {
             background: #e0e0e0;
             color: #666;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .bot .message-content {
+            background: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-content br {
+            margin-bottom: 5px;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .quick-reply {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #333;
+        }
+
+        .quick-reply:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
         }
 
         .chat-input-container {
@@ -171,9 +263,10 @@
             resize: none;
             max-height: 100px;
             min-height: 20px;
+            font-family: inherit;
         }
 
-        .send-button {
+        .chat-send {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
@@ -187,11 +280,11 @@
             transition: transform 0.2s ease;
         }
 
-        .send-button:hover {
+        .chat-send:hover {
             transform: scale(1.1);
         }
 
-        .send-button:disabled {
+        .chat-send:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
@@ -228,116 +321,202 @@
             40% { transform: scale(1); }
         }
 
-        .quick-replies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .chat-popup {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 120px);
+                bottom: 80px;
+                right: 20px;
+                left: 20px;
+            }
+            
+            .chat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
         }
 
-        .quick-reply {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 15px;
-            padding: 8px 12px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        /* Scrollbar styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .quick-reply:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
         }
 
-        .welcome-message {
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Demo content for the page */
+        .demo-content {
+            max-width: 800px;
+            margin: 0 auto;
             text-align: center;
-            color: #666;
-            font-size: 0.9rem;
+            padding: 40px 20px;
+        }
+
+        .demo-content h1 {
+            font-size: 2.5rem;
+            color: #333;
             margin-bottom: 20px;
         }
 
-        @media (max-width: 480px) {
-            .chat-container {
-                height: 100vh;
-                border-radius: 0;
-                max-width: none;
-            }
-            
-            body {
-                padding: 0;
-            }
+        .demo-content p {
+            font-size: 1.2rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <div class="status-indicator"></div>
-            <h1><i class="fas fa-graduation-cap"></i> TrueLearn Academy</h1>
-            <p>AI Learning Assistant</p>
+    <!-- Demo Content -->
+    <div class="demo-content">
+        <h1>TrueLearn Academy</h1>
+        <p>Welcome to our academy! We offer comprehensive training in various technology courses including Web Development, Data Science, AI & Machine Learning, and more.</p>
+        <button class="demo-button">Learn More</button>
+    </div>
+
+    <!-- Floating Chat Widget -->
+    <div class="chat-widget">
+        <!-- Chat Icon -->
+        <div class="chat-icon" id="chatIcon">
+            <div class="pulse"></div>
+            <i class="fas fa-comments"></i>
         </div>
         
-        <div class="chat-messages" id="chatMessages">
-            <div class="welcome-message">
-                Welcome to TrueLearn Academy! How can I help you today?
-            </div>
-            
-            <div class="message bot">
-                <div class="message-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="message-content">
-                    Hello! I'm your AI learning assistant at TrueLearn Academy. I can help you with:
-                    <br><br>
-                    📚 Course information and enrollment<br>
-                    🎯 Learning path recommendations<br>
-                    💰 Pricing and payment options<br>
-                    📞 Technical support<br>
-                    🏆 Certificates and career guidance
-                    <br><br>
-                    What would you like to know about?
-                </div>
-            </div>
-            
-            <div class="quick-replies">
-                <div class="quick-reply" onclick="sendQuickReply('What courses do you offer?')">Available Courses</div>
-                <div class="quick-reply" onclick="sendQuickReply('How much do courses cost?')">Pricing</div>
-                <div class="quick-reply" onclick="sendQuickReply('How do I enroll?')">Enrollment</div>
-                <div class="quick-reply" onclick="sendQuickReply('Contact information')">Contact Us</div>
-            </div>
-        </div>
-        
-        <div class="typing-indicator" id="typingIndicator">
-            <div class="typing-dots">
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-            </div>
-        </div>
-        
-        <div class="chat-input-container">
-            <div class="chat-input-wrapper">
-                <textarea 
-                    class="chat-input" 
-                    id="chatInput" 
-                    placeholder="Type your message here..."
-                    rows="1"
-                    onkeydown="handleKeyDown(event)"
-                ></textarea>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
-                    <i class="fas fa-paper-plane"></i>
+        <!-- Chat Popup -->
+        <div class="chat-popup" id="chatPopup">
+            <div class="chat-header">
+                <h1>
+                    <i class="fas fa-graduation-cap"></i>
+                    TrueLearn Academy
+                </h1>
+                <p>AI Learning Assistant</p>
+                <button class="chat-close" id="chatClose">
+                    <i class="fas fa-times"></i>
                 </button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    Welcome to TrueLearn Academy! How can I help you today?
+                </div>
+                
+                <div class="message bot">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        Hello! I'm your AI learning assistant at TrueLearn Academy. I can help you with:
+                        <br><br>
+                        📚 Course information and enrollment<br>
+                        🎯 Learning path recommendations<br>
+                        💰 Pricing and payment options<br>
+                        📞 Technical support<br>
+                        🏆 Certificates and career guidance
+                        <br><br>
+                        What would you like to know about?
+                    </div>
+                </div>
+                
+                <div class="quick-replies">
+                    <div class="quick-reply" onclick="sendQuickReply('What courses do you offer?')">Available Courses</div>
+                    <div class="quick-reply" onclick="sendQuickReply('How much do courses cost?')">Pricing</div>
+                    <div class="quick-reply" onclick="sendQuickReply('How do I enroll?')">Enrollment</div>
+                    <div class="quick-reply" onclick="sendQuickReply('Contact information')">Contact Us</div>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea 
+                        class="chat-input" 
+                        id="chatInput" 
+                        placeholder="Type your message here..."
+                        rows="1"
+                    ></textarea>
+                    <button class="chat-send" id="chatSend">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        const chatIcon = document.getElementById('chatIcon');
+        const chatPopup = document.getElementById('chatPopup');
+        const chatClose = document.getElementById('chatClose');
         const chatMessages = document.getElementById('chatMessages');
         const chatInput = document.getElementById('chatInput');
-        const sendButton = document.getElementById('sendButton');
+        const chatSend = document.getElementById('chatSend');
         const typingIndicator = document.getElementById('typingIndicator');
+
+        let isChatOpen = false;
+        let isTyping = false;
+
+        // Toggle chat popup
+        chatIcon.addEventListener('click', function() {
+            if (isChatOpen) {
+                closeChat();
+            } else {
+                openChat();
+            }
+        });
+
+        // Close chat
+        chatClose.addEventListener('click', function() {
+            closeChat();
+        });
+
+        // Close chat when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.chat-widget') && isChatOpen) {
+                closeChat();
+            }
+        });
+
+        // Send message on Enter key
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
 
         // Auto-resize textarea
         chatInput.addEventListener('input', function() {
@@ -345,26 +524,21 @@
             this.style.height = Math.min(this.scrollHeight, 100) + 'px';
         });
 
-        function handleKeyDown(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
-            }
+        // Send message button
+        chatSend.addEventListener('click', function() {
+            sendMessage();
+        });
+
+        function openChat() {
+            chatPopup.classList.add('active');
+            isChatOpen = true;
+            chatInput.focus();
+            scrollToBottom();
         }
 
-        function sendQuickReply(message) {
-            addMessage(message, 'user');
-            sendMessageToAPI(message);
-        }
-
-        function sendMessage() {
-            const message = chatInput.value.trim();
-            if (message) {
-                addMessage(message, 'user');
-                sendMessageToAPI(message);
-                chatInput.value = '';
-                chatInput.style.height = 'auto';
-            }
+        function closeChat() {
+            chatPopup.classList.remove('active');
+            isChatOpen = false;
         }
 
         function addMessage(content, sender) {
@@ -373,15 +547,16 @@
             
             const avatar = document.createElement('div');
             avatar.className = 'message-avatar';
-            avatar.innerHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+            const icon = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+            avatar.innerHTML = icon;
             
             const messageContent = document.createElement('div');
             messageContent.className = 'message-content';
             
-            // Convert line breaks to <br> tags and preserve formatting
+            // Format content with line breaks and bullet points
             const formattedContent = content
                 .replace(/\n/g, '<br>')
-                .replace(/•/g, '• '); // Ensure bullet points have space
+                .replace(/•/g, '• ');
             
             messageContent.innerHTML = formattedContent;
             
@@ -405,38 +580,25 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function showFallbackIndicator() {
-            // Only show once
-            if (document.getElementById('fallbackIndicator')) return;
-            
-            const indicator = document.createElement('div');
-            indicator.id = 'fallbackIndicator';
-            indicator.style.cssText = `
-                position: fixed;
-                top: 10px;
-                right: 10px;
-                background: #ff9800;
-                color: white;
-                padding: 8px 12px;
-                border-radius: 20px;
-                font-size: 12px;
-                z-index: 1000;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            `;
-            indicator.innerHTML = '🔄 Fallback Mode';
-            document.body.appendChild(indicator);
-            
-            // Remove after 5 seconds
-            setTimeout(() => {
-                if (indicator.parentNode) {
-                    indicator.parentNode.removeChild(indicator);
-                }
-            }, 5000);
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message && !isTyping) {
+                addMessage(message, 'user');
+                sendMessageToAPI(message);
+                chatInput.value = '';
+                chatInput.style.height = 'auto';
+            }
+        }
+
+        function sendQuickReply(message) {
+            addMessage(message, 'user');
+            sendMessageToAPI(message);
         }
 
         async function sendMessageToAPI(message) {
+            isTyping = true;
+            chatSend.disabled = true;
             showTypingIndicator();
-            sendButton.disabled = true;
             
             try {
                 const response = await fetch('/api/chat', {
@@ -453,34 +615,21 @@
                 
                 if (data.status === 'success') {
                     addMessage(data.response, 'bot');
-                    
-                    // Show fallback mode indicator if needed
-                    if (data.note && data.note.includes('fallback')) {
-                        showFallbackIndicator();
-                    }
                 } else {
-                    let errorMessage = 'Sorry, I encountered an error. Please try again.';
-                    if (data.error) {
-                        if (data.error.includes('API key')) {
-                            errorMessage = 'API key not configured. Please check your .env file and ensure GEMINI_API_KEY is set correctly.';
-                        } else {
-                            errorMessage = data.error;
-                        }
-                    }
-                    addMessage(errorMessage, 'bot');
+                    addMessage('Sorry, I encountered an error. Please try again.', 'bot');
                 }
             } catch (error) {
                 hideTypingIndicator();
                 addMessage('Sorry, I\'m having trouble connecting. Please check your internet connection.', 'bot');
+                console.error('Chat API Error:', error);
             } finally {
-                sendButton.disabled = false;
+                isTyping = false;
+                chatSend.disabled = false;
             }
         }
 
-        // Focus on input when page loads
-        window.onload = function() {
-            chatInput.focus();
-        };
+        // Initialize chat
+        console.log('TrueLearn Academy Chatbot Widget initialized');
     </script>
 </body>
 </html> 
