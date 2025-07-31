@@ -1,0 +1,23 @@
+🚀 QUICK INSTALLATION GUIDE
+============================
+
+1. DEPLOY YOUR FLASK CHATBOT FIRST:
+   - Follow the deployment guide in DEPLOYMENT.md
+   - Get your Render URL (e.g., https://your-app.onrender.com)
+
+2. UPDATE API URL:
+   - Edit: truelearn-chatbot-widget.php
+   - Line 108: Replace 'your-app-name' with your actual app name
+   - Example: https://truelearn-chatbot.onrender.com/api/chat
+
+3. INSTALL IN WORDPRESS:
+   - Go to WordPress Admin → Plugins → Add New → Upload Plugin
+   - Upload this entire folder as ZIP
+   - Activate the plugin
+
+4. TEST:
+   - Visit your WordPress site
+   - Look for chat icon (bottom-right)
+   - Click and test the chat
+
+🎯 DONE! Your chatbot is now live on your WordPress site! 
