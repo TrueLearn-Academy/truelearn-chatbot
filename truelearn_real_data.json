@@ -1,0 +1,42 @@
+{
+  "name": "TrueLearn Academy",
+  "description": "At TrueLearn Academy, we empower individuals with the skills they need to thrive in today's fast-paced tech-driven world. As a leading provider of industry-focused technology courses, we specialize in delivering hands-on training across areas like Software Development, Data Science, AI & ML, Cybersecurity, Cloud Computing, Full Stack Development, and more.",
+  "courses": [
+    "WordPress Development",
+    "HTML/CSS Development",
+    "ServiceNow Training",
+    "Salesforce Training",
+    "SAP Training",
+    "Software Testing",
+    "Software Development",
+    "Data Science",
+    "AI & Machine Learning",
+    "Cybersecurity",
+    "Cloud Computing",
+    "Full Stack Development"
+  ],
+  "features": [
+    "Industry-aligned training",
+    "Hands-on practical experience",
+    "Expert instructors",
+    "Flexible scheduling",
+    "Certificate upon completion",
+    "Job placement assistance",
+    "Real-world projects",
+    "24/7 support"
+  ],
+  "contact": {
+    "email": "truelearnacademyblr@gmail.com",
+    "phone": "+91 8333803232",
+    "address": "DS complex, 14/3, Bommanahalli bus stop service road, beside VIDA showroom, Bommanahalli, Bangalore, Karnataka, 560068",
+    "hours": "Mon to Saturday 9AM to 7PM"
+  },
+  "about": "Industry-Aligned Training in WordPress, HTML/CSS, ServiceNow, Salesforce, SAP & Testing. We provide comprehensive training programs designed to meet industry standards and help students build successful careers in technology.",
+  "social_links": {
+    "facebook": "#",
+    "twitter": "#",
+    "instagram": "#",
+    "youtube": "https://www.youtube.com/watch?v=YLN1Argi7ik",
+    "linkedin": "#"
+  }
+}
